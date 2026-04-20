@@ -1,0 +1,6 @@
+{
+  "name": "FlaGest",
+  "description": "Application de gestion commerciale, stocks et facturation pour quincailleries et magasins d'électronique.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

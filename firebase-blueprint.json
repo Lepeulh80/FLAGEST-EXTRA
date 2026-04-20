@@ -1,0 +1,104 @@
+{
+  "entities": {
+    "Store": {
+      "title": "Store",
+      "description": "A physical or virtual point of sale.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "location": { "type": "string" },
+        "manager": { "type": "string" },
+        "phone": { "type": "string" },
+        "revenue": { "type": "number" },
+        "transactionsCount": { "type": "number" },
+        "status": { "type": "string", "enum": ["Open", "Closed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "status"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "An item available for sale in a specific store.",
+      "type": "object",
+      "properties": {
+        "storeId": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "price": { "type": "number" },
+        "purchasePrice": { "type": "number" },
+        "stock": { "type": "integer" },
+        "minStockThreshold": { "type": "integer" },
+        "sku": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["storeId", "name", "price", "stock", "sku"]
+    },
+    "StockMovement": {
+      "title": "Stock Movement",
+      "description": "A record of stock entry, exit, or adjustment.",
+      "type": "object",
+      "properties": {
+        "storeId": { "type": "string" },
+        "productId": { "type": "string" },
+        "type": { "type": "string", "enum": ["In", "Out", "Adjustment"] },
+        "quantity": { "type": "integer" },
+        "reason": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" }
+      },
+      "required": ["storeId", "productId", "type", "quantity", "date"]
+    },
+    "Invoice": {
+      "title": "Invoice",
+      "description": "A bill issued to a customer from a specific store.",
+      "type": "object",
+      "properties": {
+        "storeId": { "type": "string" },
+        "invoiceNumber": { "type": "string" },
+        "customerName": { "type": "string" },
+        "customerEmail": { "type": "string" },
+        "totalAmount": { "type": "number" },
+        "amountPaid": { "type": "number" },
+        "remainingDebt": { "type": "number" },
+        "status": { "type": "string", "enum": ["Paid", "Partial", "Pending", "Cancelled"] },
+        "paymentMethod": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["storeId", "invoiceNumber", "customerName", "totalAmount", "status"]
+    },
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Extended user information and role assignments.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["Admin", "Manager", "Staff"] },
+        "assignedStoreId": { "type": "string" },
+        "name": { "type": "string" }
+      },
+      "required": ["uid", "role"]
+    }
+  },
+  "firestore": {
+    "/stores/{storeId}": {
+      "schema": "Store",
+      "description": "Primary store location data."
+    },
+    "/stores/{storeId}/products/{productId}": {
+      "schema": "Product",
+      "description": "Inventory items belonging to a specific store."
+    },
+    "/stores/{storeId}/movements/{movementId}": {
+      "schema": "StockMovement",
+      "description": "Stock changes for a specific store."
+    },
+    "/stores/{storeId}/invoices/{invoiceId}": {
+      "schema": "Invoice",
+      "description": "Sales and billing records for a specific store."
+    },
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Global user roles and store assignments."
+    }
+  }
+}
